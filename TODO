@@ -1,4 +1,4 @@
 - vhd.py needs better Exceptions
-- new approach to open dynamic library
+- crossplatform dlls
 - comments
 - README

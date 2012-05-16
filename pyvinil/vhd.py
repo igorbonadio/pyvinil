@@ -10,6 +10,7 @@ class VHD:
     else:
       self.vhd_pointer = vhd_pointer
       self.vinil_dll = VinilDynamicLibrary().get_dynamic_library()
+      self.opened = True
   
   @staticmethod
   def open(path):
@@ -19,8 +20,10 @@ class VHD:
     return VHD(c_void_p(vinil_dll.vinil_vhd_open(path)))
   
   def close(self):
-    self.vinil_dll.vinil_vhd_close.argtypes = [c_void_p]
-    self.vinil_dll.vinil_vhd_close(self.vhd_pointer);
+    if self.opened:
+      self.vinil_dll.vinil_vhd_close.argtypes = [c_void_p]
+      self.vinil_dll.vinil_vhd_close(self.vhd_pointer);
+      self.opened = False
     
   def read(self, count):
     self.vinil_dll.vinil_vhd_read.argtypes = [c_void_p, c_void_p, c_int]
@@ -59,3 +62,7 @@ class VHD:
     self.vinil_dll.vinil_vhd_flush.restype = c_longlong
     if not self.vinil_dll.vinil_vhd_flush(self.vhd_pointer) == 1:
       raise Exception("flush")
+      
+  def __del__(self):
+    if self.opened:
+      self.close()

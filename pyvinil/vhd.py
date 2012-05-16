@@ -1,6 +1,6 @@
 from ctypes import *
 
-from pyvinil.vinildynamiclibrary import VinilDynamicLibrary
+from pyvinil.utils import VinilDynamicLibrary
 
 class VHD:
   

@@ -1,5 +1,7 @@
 from ctypes import *
 
+from pyvinil.vinildynamiclibrary import VinilDynamicLibrary
+
 class VHD:
   
   def __init__(self, vhd_pointer):
@@ -7,11 +9,11 @@ class VHD:
       raise Exception("open/create")
     else:
       self.vhd_pointer = vhd_pointer
-      self.vinil_dll = cdll.LoadLibrary("libvinil.dylib")
+      self.vinil_dll = VinilDynamicLibrary().get_dynamic_library()
   
   @staticmethod
   def open(path):
-    vinil_dll = cdll.LoadLibrary("libvinil.dylib")
+    vinil_dll = VinilDynamicLibrary().get_dynamic_library()
     vinil_dll.vinil_vhd_open.argtypes = [c_char_p]
     vinil_dll.vinil_vhd_open.restype = c_void_p
     return VHD(c_void_p(vinil_dll.vinil_vhd_open(path)))

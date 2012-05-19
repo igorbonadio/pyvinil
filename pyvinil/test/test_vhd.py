@@ -17,6 +17,7 @@ class TestVHD(unittest.TestCase):
   def test_read(self):
     vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
     for vhd_path in vhd_files:
+      vhd = None
       try:
         vhd = VHD.open("pyvinil/test/data/" + vhd_path)
       except:
@@ -30,6 +31,7 @@ class TestVHD(unittest.TestCase):
   def test_write(self):
     vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
     for vhd_path in vhd_files:
+      vhd = None
       try:
         vhd = VHD.open("pyvinil/test/data/" + vhd_path)
       except:
@@ -47,6 +49,18 @@ class TestVHD(unittest.TestCase):
         self.assertEqual(vhd.tell(), 4, "Tell returns a wrong sector")
       except:
         self.assertTrue(False, "Cannot call seek to " + vhd_path)
+      vhd.close()
+      
+  def test_footer(self):
+    vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
+    for vhd_path in vhd_files:
+      vhd = None
+      try:
+        vhd = VHD.open("pyvinil/test/data/" + vhd_path)
+      except:
+        self.assertTrue(False, "Cannot open " + vhd_path)
+      self.assertTrue(vhd.footer is not None, "Cannot access " + vhd_path + "'s footer")
+      self.assertEqual(vhd.footer.cookie, "conectix", "Invalid cookie")
       vhd.close()
 
 def suite():

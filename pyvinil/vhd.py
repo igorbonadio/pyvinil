@@ -3,6 +3,28 @@ from ctypes import *
 from pyvinil.utils import VinilDynamicLibrary
 from pyvinil.error import VHDError
 
+class VHDFooterStructure(Structure):
+  _fields_ = [("cookie", c_char*8),
+              ("features", c_uint),
+              ("file_format_version", c_uint),
+              ("data_offset", c_longlong),
+              ("timestamp", c_uint),
+              ("creator_application", c_char*4),
+              ("creator_version", c_uint),
+              ("creator_host_os", c_uint),
+              ("original_size", c_longlong),
+              ("current_size", c_longlong),
+              ("disk_geometry", c_uint),
+              ("disk_type", c_uint),
+              ("checksum", c_uint),
+              ("uuid", c_char*16),
+              ("saved_state", c_char),
+              ("reserved", c_char*427)]
+              
+class VinilVHDStructure(Structure):
+  _fields_ = [("fd", c_void_p),
+              ("footer", c_void_p)]
+
 class VHD:
   
   def __init__(self, vhd_pointer):
@@ -12,6 +34,7 @@ class VHD:
       self.vhd_pointer = vhd_pointer
       self.vinil_dll = VinilDynamicLibrary().get_dynamic_library()
       self.opened = True
+      self.footer = cast(cast(self.vhd_pointer, POINTER(VinilVHDStructure)).contents.footer, POINTER(VHDFooterStructure)).contents
   
   @staticmethod
   def open(path):

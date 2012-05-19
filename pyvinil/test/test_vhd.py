@@ -1,5 +1,7 @@
 import unittest
 
+from ctypes import *
+
 from pyvinil.vhd import VHD
 
 class TestVHD(unittest.TestCase):
@@ -54,6 +56,7 @@ class TestVHD(unittest.TestCase):
   def test_footer(self):
     vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
     for vhd_path in vhd_files:
+      print "abrindo..."
       vhd = None
       try:
         vhd = VHD.open("pyvinil/test/data/" + vhd_path)
@@ -61,7 +64,7 @@ class TestVHD(unittest.TestCase):
         self.assertTrue(False, "Cannot open " + vhd_path)
       self.assertTrue(vhd.footer is not None, "Cannot access " + vhd_path + "'s footer")
       self.assertEqual(vhd.footer.cookie, "conectix", "Invalid cookie")
-      print vhd.footer.saved_state
+      
       vhd.close()
 
 def suite():

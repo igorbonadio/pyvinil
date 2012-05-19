@@ -61,6 +61,7 @@ class TestVHD(unittest.TestCase):
         self.assertTrue(False, "Cannot open " + vhd_path)
       self.assertTrue(vhd.footer is not None, "Cannot access " + vhd_path + "'s footer")
       self.assertEqual(vhd.footer.cookie, "conectix", "Invalid cookie")
+      print vhd.footer.saved_state
       vhd.close()
 
 def suite():

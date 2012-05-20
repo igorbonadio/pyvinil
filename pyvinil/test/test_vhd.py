@@ -3,6 +3,7 @@ import unittest
 from ctypes import *
 
 from pyvinil.vhd import VHD
+from pyvinil import utils
 
 class TestVHD(unittest.TestCase):
   
@@ -64,6 +65,7 @@ class TestVHD(unittest.TestCase):
       self.assertTrue(vhd.footer is not None, "Cannot access " + vhd_path + "'s footer")
       self.assertEqual(vhd.footer.cookie, "conectix", "Invalid cookie")
       vhd.footer.disk_type = 3
+      vhd.footer.uuid = utils.uuid_generate()
       try:
         vhd.commit_structural_changes()
       except:

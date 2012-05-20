@@ -24,3 +24,11 @@ class VinilDynamicLibrary:
     
   def get_dynamic_library(self):
     return self.dll
+
+
+def uuid_generate():
+  vinil_dll = VinilDynamicLibrary().get_dynamic_library()
+  vinil_dll.vinil_uuid_generate.argtypes = [c_void_p]
+  uuid = (c_char*16)()
+  vinil_dll.vinil_uuid_generate(byref(uuid))
+  return uuid.value

@@ -29,7 +29,7 @@ class TestVHD(unittest.TestCase):
       except:
         self.assertTrue(False, "Cannot read 1 sector from " + vhd_path)
       vhd.close()
-
+  
   def test_write(self):
     vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
     for vhd_path in vhd_files:
@@ -56,7 +56,6 @@ class TestVHD(unittest.TestCase):
   def test_footer(self):
     vhd_files = ["vhd_test_y.vhd", "vhd_test_zero.vhd"]
     for vhd_path in vhd_files:
-      print "abrindo..."
       vhd = None
       try:
         vhd = VHD.open("pyvinil/test/data/" + vhd_path)
@@ -64,7 +63,11 @@ class TestVHD(unittest.TestCase):
         self.assertTrue(False, "Cannot open " + vhd_path)
       self.assertTrue(vhd.footer is not None, "Cannot access " + vhd_path + "'s footer")
       self.assertEqual(vhd.footer.cookie, "conectix", "Invalid cookie")
-      
+      vhd.footer.disk_type = 3
+      try:
+        vhd.commit_structural_changes()
+      except:
+        self.assertTrue(False, "Cannot commit structural changes of " + vhd_path)
       vhd.close()
 
 def suite():

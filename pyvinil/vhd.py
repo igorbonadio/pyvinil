@@ -89,7 +89,6 @@ class VHD:
       
   def commit_structural_changes(self):
     self.vinil_dll.vinil_vhd_commit_structural_changes.argtypes = [c_void_p]
-    self.vinil_dll.vinil_vhd_commit_structural_changes.restype = c_int
     if not self.vinil_dll.vinil_vhd_commit_structural_changes(self.vhd_pointer) == 1:
       raise VHDError("flush couldn't be executed")
       

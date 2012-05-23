@@ -1,5 +1,6 @@
 import platform
 from ctypes import *
+from ctypes.util import find_library
 
 def singleton(cls):
     instance_list = list()
@@ -15,12 +16,7 @@ class VinilDynamicLibrary:
     self.dll = cdll.LoadLibrary("libvinil.dylib")
     
   def get_dl_path(self):
-    if platform.system() == "Linux":
-      return "libvinil.so"
-    elif platform.system() == "Windows":
-      return "vinil.dll"
-    else: # MacOS X
-      return "libvinil.dylib"
+    return find_library("vinil")
     
   def get_dynamic_library(self):
     return self.dll

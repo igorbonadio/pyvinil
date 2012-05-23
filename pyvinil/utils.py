@@ -13,7 +13,7 @@ def singleton(cls):
 @singleton
 class VinilDynamicLibrary:
   def __init__(self):
-    self.dll = cdll.LoadLibrary("libvinil.dylib")
+    self.dll = cdll.LoadLibrary(self.get_dl_path())
     
   def get_dl_path(self):
     return find_library("vinil")
